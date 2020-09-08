@@ -2,7 +2,7 @@ package com.eaglesoft.calculator.ui.calc
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.eaglesoft.calculator.Calculations
+import com.eaglesoft.calculator.model.Calculations
 
 class CalculatorViewModel : ViewModel() {
 

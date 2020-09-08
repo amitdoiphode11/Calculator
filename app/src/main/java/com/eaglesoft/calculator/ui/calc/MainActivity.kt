@@ -1,4 +1,4 @@
-package com.eaglesoft.git.ui.calc
+package com.eaglesoft.calculator.ui.calc
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.eaglesoft.calculator.R
 import kotlinx.android.synthetic.main.activity_main.*
 import net.objecthunter.exp4j.ExpressionBuilder
+import kotlin.jvm.Throws
 
 class MainActivity : AppCompatActivity() {
     private var display: String? = ""
@@ -89,21 +91,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     fun equalresult(v: View?) {
-        var input = getinput()
-        if (!endsWithOperator()) {
-            if (input.contains("x")) {
-                input = input.replace("x".toRegex(), "*")
-            }
-            if (input.contains("\u00F7")) {
-                input = input.replace("\u00F7".toRegex(), "/")
-            }
-            //MADS
-            Log.e(TAG, "equalresult: $input")
-            val expression = ExpressionBuilder(input).build()
-            val result = expression.evaluate()
-            result_box!!.text = result.toString()
-        } else result_box!!.text = ""
-        println(result)
+        try {
+            var input = getinput()
+            if (!endsWithOperator()) {
+                if (input.contains("x")) {
+                    input = input.replace("x".toRegex(), "*")
+                }
+                if (input.contains("\u00F7")) {
+                    input = input.replace("\u00F7".toRegex(), "/")
+                }
+                //MADS
+                Log.e(TAG, "equalresult: $input")
+                val expression = ExpressionBuilder(input).build()
+                val result = expression.evaluate()
+                result_box!!.text = result.toString()
+            } else result_box!!.text = ""
+            println(result)
+        } catch (e: Exception) {
+            Toast.makeText(this,getString(R.string.error_invalid_input),Toast.LENGTH_SHORT).show()
+            Log.e(TAG, "equalresult: ", e)
+        }
     }
 }

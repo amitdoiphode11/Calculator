@@ -1,4 +1,4 @@
-package com.eaglesoft.calculator
+package com.eaglesoft.calculator.model
 
 data class Calculations(
     val value: Float? = 0F,
