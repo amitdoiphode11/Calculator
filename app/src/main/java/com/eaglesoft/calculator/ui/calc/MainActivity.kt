@@ -83,10 +83,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun operate(a: String, b: String, cp: String): Double {
         return when (cp) {
-            "+" -> java.lang.Double.valueOf(a) + java.lang.Double.valueOf(b)
-            "-" -> java.lang.Double.valueOf(a) - java.lang.Double.valueOf(b)
             "x" -> java.lang.Double.valueOf(a) * java.lang.Double.valueOf(b)
+            "+" -> java.lang.Double.valueOf(a) + java.lang.Double.valueOf(b)
             "\u00F7" -> java.lang.Double.valueOf(a) / java.lang.Double.valueOf(b)
+            "-" -> java.lang.Double.valueOf(a) - java.lang.Double.valueOf(b)
             else -> (-1).toDouble()
         }
     }
@@ -102,15 +102,31 @@ class MainActivity : AppCompatActivity() {
                 if (input.contains("\u00F7")) {
                     input = input.replace("\u00F7".toRegex(), "/")
                 }
+
+                if (input.contains("*")) {
+                    input = input.replace("*", " * ")
+                }
+                if (input.contains("+")) {
+                    input = input.replace("+", " + ")
+                }
+                if (input.contains("/")) {
+                    input = input.replace("/", " / ")
+                }
+                if (input.contains("-")) {
+                    input = input.replace("-", " - ")
+                }
+
                 //MADS
-                Log.e(TAG, "equalresult: $input")
+                val sp =
+                    input.split(" ")
+                Log.e(TAG, "equalresult: $input $sp")
                 val expression = ExpressionBuilder(input).build()
                 val result = expression.evaluate()
                 result_box!!.text = result.toString()
             } else result_box!!.text = ""
             println(result)
         } catch (e: Exception) {
-            Toast.makeText(this,getString(R.string.error_invalid_input),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.error_invalid_input), Toast.LENGTH_SHORT).show()
             Log.e(TAG, "equalresult: ", e)
         }
     }
