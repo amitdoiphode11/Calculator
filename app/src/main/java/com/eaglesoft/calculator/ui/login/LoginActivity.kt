@@ -71,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun goToHome() {
         intent = MainActivity.getStartIntent(this)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
