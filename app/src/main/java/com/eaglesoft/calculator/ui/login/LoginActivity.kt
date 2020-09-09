@@ -1,6 +1,7 @@
 package com.eaglesoft.calculator.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -17,6 +18,9 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private val TAG = "LoginActivity"
         private const val RC_SIGN_IN = 1
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, LoginActivity::class.java)
+        }
 
     }
 

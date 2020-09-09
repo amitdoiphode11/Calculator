@@ -8,8 +8,8 @@ class CalculatorViewModel : ViewModel() {
 
     val s = "MADS"
 
-    val _finalCalculation: MutableLiveData<List<Calculations>>? = null
-    var _calculation: MutableLiveData<List<Calculations>>? = null
+    val _finalCalculation: MutableLiveData<List<String>>? = MutableLiveData()
+    var _calculation: MutableLiveData<List<Calculations>>? = MutableLiveData()
 
     fun addValue(calculations: Calculations?) {
         val tempList: MutableList<Calculations> = _calculation?.value as MutableList<Calculations>
@@ -17,9 +17,10 @@ class CalculatorViewModel : ViewModel() {
         _calculation?.postValue(tempList)
     }
 
-    fun calculate() {
-        for (calculation in _calculation?.value!!) {
-
-        }
+    fun insertHistory(value: String?) {
+        val tempList =
+            if (_finalCalculation?.value != null) _finalCalculation.value as MutableList<String> else ArrayList()
+        value?.let { tempList.add(it) }
+        _finalCalculation?.postValue(tempList)
     }
 }

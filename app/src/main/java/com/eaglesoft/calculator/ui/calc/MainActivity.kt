@@ -4,19 +4,25 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.eaglesoft.calculator.R
+import com.eaglesoft.calculator.ui.history.HistoryActivity
+import com.eaglesoft.calculator.ui.login.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import net.objecthunter.exp4j.ExpressionBuilder
-import kotlin.jvm.Throws
 
 class MainActivity : AppCompatActivity() {
     private var display: String? = ""
     private var currentOperator = ""
     private val result = ""
+    private var viewModel: CalculatorViewModel? = null
 
     companion object {
         private val TAG = "MainActivity"
@@ -29,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel = ViewModelProvider(this).get(CalculatorViewModel::class.java)
+
         butdelet.setOnClickListener { deletenumber() }
         input_box.setText(display)
     }
@@ -117,9 +125,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 //MADS
+                viewModel?.insertHistory(input)
                 val sp =
                     input.split(" ")
                 Log.e(TAG, "equalresult: $input $sp")
+
                 val expression = ExpressionBuilder(input).build()
                 val result = expression.evaluate()
                 result_box!!.text = result.toString()
@@ -129,5 +139,29 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.error_invalid_input), Toast.LENGTH_SHORT).show()
             Log.e(TAG, "equalresult: ", e)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_calc, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_history -> {
+                intent = HistoryActivity.getStartIntent(
+                    this,
+                    viewModel?._finalCalculation?.value as ArrayList<String>?
+                )
+                startActivity(intent)
+            }
+            R.id.menu_logout -> {
+                FirebaseAuth.getInstance().signOut()
+                intent = LoginActivity.getStartIntent(this)
+                startActivity(intent)
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

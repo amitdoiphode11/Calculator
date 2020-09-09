@@ -3,5 +3,8 @@
     <string name="error_login">Login Unsuccessful</string>
     <string name="success_login">Login Successful</string>
     <string name="error_invalid_input">Please enter valid input</string>
+    <string name="title_logout">Logout</string>
+    <string name="title_history">History</string>
+    <string name="label_no_data_found">No data found</string>
 
 </resources>
